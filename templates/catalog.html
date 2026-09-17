@@ -1,40 +1,58 @@
 {% extends "base.html" %}
 
-{% block title %}Каталог — Аукцион Резиновых Уток{% endblock %}
+{% block title %}Каталог — DuckAuction{% endblock %}
 
 {% block content %}
 <section class="page-title">
     <div class="container">
+        <p class="eyebrow">Все предложения</p>
         <h1>Каталог уток</h1>
         <p>Выберите свою идеальную резиновую утку</p>
     </div>
 </section>
 
 <section class="section container">
-    <div class="filters">
-        <a href="{{ url_for('catalog') }}" class="{% if not current_category %}active{% endif %}">Все</a>
-        <a href="{{ url_for('catalog', category='Классика') }}" class="{% if current_category == 'Классика' %}active{% endif %}">Классика</a>
-        <a href="{{ url_for('catalog', category='Тематические') }}" class="{% if current_category == 'Тематические' %}active{% endif %}">Тематические</a>
-        <a href="{{ url_for('catalog', category='Премиум') }}" class="{% if current_category == 'Премиум' %}active{% endif %}">Премиум</a>
+    <div class="filters" aria-label="Фильтр по категориям">
+        <a href="{{ url_for('catalog') }}" class="filter {% if not current_category %}active{% endif %}">Все</a>
+        <a href="{{ url_for('catalog', category='Классика') }}" class="filter {% if current_category == 'Классика' %}active{% endif %}">Классика</a>
+        <a href="{{ url_for('catalog', category='Тематические') }}" class="filter {% if current_category == 'Тематические' %}active{% endif %}">Тематические</a>
+        <a href="{{ url_for('catalog', category='Премиум') }}" class="filter {% if current_category == 'Премиум' %}active{% endif %}">Премиум</a>
+    </div>
+
+    <div class="catalog-count">
+        Найдено лотов: <strong>{{ ducks|length }}</strong>
     </div>
 
     <div class="duck-grid">
         {% for duck in ducks %}
         <article class="duck-card">
-            <a href="{{ url_for('duck_detail', duck_id=duck.id) }}">
+            <a href="{{ url_for('duck_detail', duck_id=duck.id) }}" class="duck-card-link">
                 <div class="duck-image">
-    <img src="{{ url_for('static', filename='images/' + duck.image) }}" alt="{{ duck.name }}">
-</div>
+                    <img src="{{ url_for('static', filename='images/' + duck.image) }}" alt="{{ duck.name }}">
+                    <span class="image-badge">{{ duck.category }}</span>
+                </div>
                 <div class="duck-info">
                     <h3>{{ duck.name }}</h3>
-                    <p class="category">{{ duck.category }}</p>
-                    <p class="price">Текущая ставка: {{ duck.current_bid }} ₽</p>
-                    <p class="status">{{ '🟢 Активен' if duck.status == 'active' else '🔴 Завершён' }}</p>
+                    <p class="description-short">{{ duck.description }}</p>
+                    <div class="card-bottom">
+                        <div>
+                            <span class="price-label">Текущая ставка</span>
+                            <p class="price">{{ duck.current_bid }} ₽</p>
+                        </div>
+                        <span class="status {% if duck.status == 'active' %}status-active{% else %}status-ended{% endif %}">
+                            {{ '● Активен' if duck.status == 'active' else '● Завершён' }}
+                        </span>
+                    </div>
                 </div>
             </a>
         </article>
         {% else %}
-        <p>В этой категории пока нет уток.</p>
+        <div class="empty-state">
+            <span class="empty-icon">🔎</span>
+            <h3>В этой категории пока нет уток</h3>
+            <p>Попробуйте выбрать другую категорию.</p>
+            <a href="{{ url_for('catalog') }}" class="button">Показать все</a>
+        </div>
         {% endfor %}
     </div>
 </section>

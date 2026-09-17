@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Аукцион Резиновых Уток{% endblock %}</title>
+    <meta name="description" content="Мини-аукцион коллекционных резиновых уток">
+    <title>{% block title %}DuckAuction — Аукцион Резиновых Уток{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header class="main-header">
-        <div class="container">
-            <a href="{{ url_for('index') }}" class="logo">🦆 DuckAuction</a>
-            <nav class="main-nav">
-                <a href="{{ url_for('index') }}">Главная</a>
-                <a href="{{ url_for('catalog') }}">Каталог</a>
+        <div class="container header-inner">
+            <a href="{{ url_for('index') }}" class="logo" aria-label="DuckAuction — главная">
+                <span class="logo-icon">🦆</span> DuckAuction
+            </a>
+            <nav class="main-nav" aria-label="Основная навигация">
+                <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">Главная</a>
+                <a href="{{ url_for('catalog') }}" class="{% if request.endpoint == 'catalog' %}active{% endif %}">Каталог</a>
             </nav>
         </div>
     </header>
@@ -22,8 +25,9 @@
     </main>
 
     <footer class="main-footer">
-        <div class="container">
-            <p>&copy; 2026 Аукцион Резиновых Уток. Все права защищены.</p>
+        <div class="container footer-inner">
+            <p>&copy; 2026 DuckAuction. Мини-проект на Flask.</p>
+            <a href="{{ url_for('catalog') }}">Перейти к каталогу</a>
         </div>
     </footer>
 </body>

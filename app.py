@@ -73,6 +73,10 @@ def bid(duck_id):
     result = None
 
     if request.method == "POST":
+        if duck["status"] != "active":
+            error = "Торги по этому лоту уже завершены."
+            return render_template("bid.html", duck=duck, error=error, result=None)
+
         name = request.form.get("name", "").strip()
         email = request.form.get("email", "").strip()
         bid_amount_str = request.form.get("bid_amount", "").strip()
