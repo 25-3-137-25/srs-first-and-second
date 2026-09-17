@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for
 
 app = Flask(__name__)
 
-# Данные об утках (в реальном проекте это была бы база данных)
+
 ducks = [
     {
         "id": 1,
@@ -49,7 +49,7 @@ def index():
 
 @app.route("/catalog")
 def catalog():
-    # Использование параметра запроса (query parameter)
+    
     category = request.args.get("category")
     if category:
         filtered_ducks = [d for d in ducks if d["category"] == category]
@@ -59,7 +59,7 @@ def catalog():
 
 @app.route("/duck/<int:duck_id>")
 def duck_detail(duck_id):
-    # Использование параметра маршрута (route parameter)
+   
     duck = next((d for d in ducks if d["id"] == duck_id), None)
     return render_template("duck.html", duck=duck)
 
@@ -77,7 +77,7 @@ def bid(duck_id):
         email = request.form.get("email", "").strip()
         bid_amount_str = request.form.get("bid_amount", "").strip()
 
-        # Базовая проверка введённых пользователем данных
+        
         if not name or not email:
             error = "Пожалуйста, заполните имя и email."
         elif "@" not in email:
@@ -88,19 +88,19 @@ def bid(duck_id):
                 if bid_amount <= duck["current_bid"]:
                     error = f"Ставка должна быть строго больше текущей ({duck['current_bid']} ₽)."
                 else:
-                    # Успешная обработка данных
+                    
                     result = {
                         "name": name,
                         "email": email,
                         "bid_amount": bid_amount,
                         "duck_name": duck["name"]
                     }
-                    # Обновляем текущую ставку (в памяти, для демонстрации)
+                   
                     duck["current_bid"] = bid_amount
             except ValueError:
                 error = "Ставка должна быть целым числом."
 
-    # Передача данных из Flask в HTML-шаблон
+  
     return render_template("bid.html", duck=duck, error=error, result=result)
 
 if __name__ == "__main__":

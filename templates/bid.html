@@ -11,7 +11,7 @@
 
 <section class="section container">
     {% if result %}
-    <!-- Отдельный блок для вывода результата обработки данных -->
+    
     <div class="success-message">
         <h2>Ставка успешно принята! 🎉</h2>
         <p>Спасибо, {{ result.name }}!</p>
@@ -32,7 +32,7 @@
             <h2>Лот: {{ duck.name }}</h2>
             <p>Текущая ставка: <strong>{{ duck.current_bid }} ₽</strong>. Минимальная новая ставка: {{ duck.current_bid + 100 }} ₽.</p>
             
-            <!-- HTML-форма для ввода данных пользователем -->
+            
             <form method="POST" action="{{ url_for('bid', duck_id=duck.id) }}" class="bid-form">
                 <div class="form-group">
                     <label for="name">Ваше имя:</label>
