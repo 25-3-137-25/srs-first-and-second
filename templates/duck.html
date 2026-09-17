@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}{% if duck %}{{ duck.name }}{% else %}Утка не найдена{% endif %} — Аукцион{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <div class="container">
+        {% if duck %}
+        <p class="small-text">{{ duck.category }}</p>
+        <h1>{{ duck.name }}</h1>
+        {% else %}
+        <h1>Утка не найдена</h1>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section container">
+    {% if duck %}
+    <div class="duck-detail">
+        <div class="duck-image-large">
+    <img src="{{ url_for('static', filename='images/' + duck.image) }}" alt="{{ duck.name }}">
+</div>
+        <div class="duck-detail-info">
+            <p class="price-large">Текущая ставка: <strong>{{ duck.current_bid }} ₽</strong></p>
+            <p class="description">{{ duck.description }}</p>
+            <p class="status">Статус: {{ 'Активен' if duck.status == 'active' else 'Завершён' }}</p>
+            
+            {% if duck.status == 'active' %}
+            <a href="{{ url_for('bid', duck_id=duck.id) }}" class="button">Сделать ставку</a>
+            {% else %}
+            <button class="button disabled" disabled>Торги завершены</button>
+            {% endif %}
+            
+            <p style="margin-top: 20px;"><a href="{{ url_for('catalog') }}">← Вернуться в каталог</a></p>
+        </div>
+    </div>
+    {% else %}
+    <p>К сожалению, такой утки не существует.</p>
+    <a href="{{ url_for('catalog') }}" class="button">В каталог</a>
+    {% endif %}
+</section>
+{% endblock %}

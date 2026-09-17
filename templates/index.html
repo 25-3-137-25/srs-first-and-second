@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Главная — Аукцион Резиновых Уток{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="container">
+        <h1>Добро пожаловать на самый крякающий аукцион!</h1>
+        <p class="hero-text">Уникальные коллекционные резиновые утки ждут своих новых владельцев. Делайте ставки и забирайте домой частичку радости.</p>
+        <a href="{{ url_for('catalog') }}" class="button">Перейти к торгам</a>
+    </div>
+</section>
+
+<section class="section container">
+    <div class="section-title">
+        <h2>Активные лоты</h2>
+        <a href="{{ url_for('catalog') }}">Смотреть все →</a>
+    </div>
+    <div class="duck-grid">
+        {% for duck in ducks %}
+        <article class="duck-card">
+            <a href="{{ url_for('duck_detail', duck_id=duck.id) }}">
+                <div class="duck-image">
+    <img src="{{ url_for('static', filename='images/' + duck.image) }}" alt="{{ duck.name }}">
+</div>
+                <div class="duck-info">
+                    <h3>{{ duck.name }}</h3>
+                    <p class="category">{{ duck.category }}</p>
+                    <p class="price">Текущая ставка: {{ duck.current_bid }} ₽</p>
+                </div>
+            </a>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог — Аукцион Резиновых Уток{% endblock %}
+
+{% block content %}
+<section class="page-title">
+    <div class="container">
+        <h1>Каталог уток</h1>
+        <p>Выберите свою идеальную резиновую утку</p>
+    </div>
+</section>
+
+<section class="section container">
+    <div class="filters">
+        <a href="{{ url_for('catalog') }}" class="{% if not current_category %}active{% endif %}">Все</a>
+        <a href="{{ url_for('catalog', category='Классика') }}" class="{% if current_category == 'Классика' %}active{% endif %}">Классика</a>
+        <a href="{{ url_for('catalog', category='Тематические') }}" class="{% if current_category == 'Тематические' %}active{% endif %}">Тематические</a>
+        <a href="{{ url_for('catalog', category='Премиум') }}" class="{% if current_category == 'Премиум' %}active{% endif %}">Премиум</a>
+    </div>
+
+    <div class="duck-grid">
+        {% for duck in ducks %}
+        <article class="duck-card">
+            <a href="{{ url_for('duck_detail', duck_id=duck.id) }}">
+                <div class="duck-image">
+    <img src="{{ url_for('static', filename='images/' + duck.image) }}" alt="{{ duck.name }}">
+</div>
+                <div class="duck-info">
+                    <h3>{{ duck.name }}</h3>
+                    <p class="category">{{ duck.category }}</p>
+                    <p class="price">Текущая ставка: {{ duck.current_bid }} ₽</p>
+                    <p class="status">{{ '🟢 Активен' if duck.status == 'active' else '🔴 Завершён' }}</p>
+                </div>
+            </a>
+        </article>
+        {% else %}
+        <p>В этой категории пока нет уток.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
